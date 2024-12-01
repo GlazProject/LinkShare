@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список ссылок</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+        .links {
+            margin-bottom: 20px;
+        }
+        .links ol {
+            list-style-type: decimal;
+            padding-left: 20px;
+        }
+        .links a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        .links a:hover {
+            text-decoration: underline;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+        .buttons input[type="button"] {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .buttons input[type="button"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="links" id="linksContainer">
+        <ol id="linksList">
+        </ol>
+    </div>
+    <div class="buttons">
+        <input type="button" id="refreshButton" value="Обновить">
+        <input type="button" id="logoutButton" value="Выйти">
+    </div>
+</div>
+
+<script>
+    function fetchLinks() {
+        fetch('/api/tv/links')
+            .then(response => response.json())
+            .then(data => {
+                const linksList = document.getElementById('linksList');
+                linksList.innerHTML = '';
+
+                data.forEach((link, index) => {
+                    const listItem = document.createElement('li');
+                    const linkElement = document.createElement('a');
+                    linkElement.href = link.url;
+                    linkElement.textContent = link.title;
+                    // linkElement.target = '_blank';
+                    listItem.appendChild(linkElement);
+                    linksList.appendChild(listItem);
+                });
+            })
+            .catch(error => {
+                console.error('Ошибка при получении ссылок:', error);
+                const linksList = document.getElementById('linksList');
+                linksList.innerHTML = '<li>Ошибка при получении ссылок</li>';
+            });
+    }
+
+    function logout() {
+        const backlink = window.location.href;
+        fetch(`/api/user/logout?backlink=${encodeURIComponent(backlink)}`, {
+            method: 'GET'
+        })
+            .then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url;
+                } else {
+                    alert('Ошибка при выходе из системы.');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка при выходе из системы:', error);
+                alert('Произошла ошибка при выходе из системы.');
+            });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchLinks();
+
+        document.getElementById('refreshButton').addEventListener('click', () => {
+            fetchLinks();
+        });
+
+        document.getElementById('logoutButton').addEventListener('click', () => {
+            logout();
+        });
+    });
+</script>
+
+</body>
+</html>

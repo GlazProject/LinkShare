@@ -24,6 +24,8 @@ import ru.linkshare.domain.utils.CodesGenerator
 import ru.linkshare.web.controllers.LinksController
 import ru.linkshare.web.controllers.UserController
 import ru.linkshare.web.links
+import ru.linkshare.web.redirects
+import ru.linkshare.web.statics
 import ru.linkshare.web.users
 import java.io.File
 
@@ -42,6 +44,8 @@ fun Application.module() = module(DI {
     bindSingleton { UserController(instance(), instance()) }
 })
 
+// TODO настроить SSL
+// TODO прибратся в конфигурации
 fun Application.module(kodein: DI) {
     install(ContentNegotiation) {
         json()
@@ -55,11 +59,11 @@ fun Application.module(kodein: DI) {
         }
     }
     install(Sessions){
-        header<UserSession>("X-user-sid", directorySessionStorage(File("build/.sessions")))
+        cookie<UserSession>("X-user-sid", directorySessionStorage(File("build/.sessions")))
     }
     install(Authentication) {
         session<UserSession>("editor-session") {
-            validate { session -> session } // validate session presented
+            validate { session -> session }
             challenge("/user/login")
         }
         session<UserSession>("show-session") {
@@ -71,6 +75,8 @@ fun Application.module(kodein: DI) {
     val userController by kodein.instance<UserController>()
     val linksController by kodein.instance<LinksController>()
     routing {
+        statics()
+        redirects()
         users(userController)
         links(linksController)
     }

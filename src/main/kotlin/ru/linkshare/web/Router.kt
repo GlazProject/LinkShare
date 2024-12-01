@@ -1,30 +1,52 @@
 package ru.linkshare.web
 
 import io.ktor.server.auth.*
+import io.ktor.server.http.content.*
+import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.server.routing.get
 import ru.linkshare.web.controllers.LinksController
 import ru.linkshare.web.controllers.UserController
 
-fun Routing.users(userController: UserController) {
-    route("tv") {
-        get("code") { userController.getCode(this.call) }
-    }
+fun Routing.redirects() {
+    get("") { this.call.respondRedirect("tv") }
+    get("edit") {this.call.respondRedirect("edit/links")}
+    get("user") {this.call.respondRedirect("user/login")}
+}
 
-    route("user") {
-        post("login") { userController.logIn(this.call) }
-        post("logout") { userController.logOut(this.call) }
+fun Routing.statics() {
+    staticResources("user/login", "/static/user/login")
+    staticResources("tv/code", "/static/tv/code")
+    authenticate("show-session") {
+        staticResources("tv", "/static/tv")
+    }
+    authenticate("editor-session") {
+        staticResources("edit/links", "/static/edit/links")
     }
 }
 
-fun Routing.links(linksController: LinksController) {
-    route("") {
-        authenticate("show-session") {
-            get { linksController.getLinks(this.call) }
+fun Routing.users(userController: UserController) {
+    route("api/user") {
+        route("code") {
+            get { userController.getCodeForCurrentSession(this.call) }
+            get("new") { userController.getNewCode(this.call) }
         }
+        post("login") { userController.logIn(this.call) }
+        get("logout") { userController.logOut(this.call) }
     }
-    route("edit") {
+}
+
+// TODO прибраться и сделать нормальные модели запросов
+fun Routing.links(linksController: LinksController) {
+    route("api") {
+        authenticate("show-session") {
+            route("tv") {
+                get("links") { linksController.getLinks(this.call) }
+            }
+        }
+
         authenticate("editor-session") {
-            route("links") {
+            route("edit/links") {
                 get { linksController.getLinks(this.call) }
                 post("save") { linksController.saveLink(this.call) }
                 post("delete") { linksController.deleteLinks(this.call) }

@@ -5,6 +5,8 @@ import ru.linkshare.domain.models.LinkTitle
 import ru.linkshare.domain.models.UID
 import ru.linkshare.domain.repository.abstractions.LinksRepository
 
+// TODO сделать нормальную БД
+// TODO добавить время жизни записей
 class InMemoryLinksRepository : LinksRepository {
     private val links = mutableMapOf<UID, MutableList<LinkInfo>>()
 

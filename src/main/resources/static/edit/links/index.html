@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админская панель</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+        }
+        .links {
+            margin-bottom: 20px;
+        }
+        .links ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .links li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .links li:last-child {
+            border-bottom: none;
+        }
+        .links input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        .links a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        .links a:hover {
+            text-decoration: underline;
+        }
+        .add-link {
+            margin-bottom: 20px;
+        }
+        .add-link input[type="text"] {
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .add-link input[type="button"] {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .add-link input[type="button"]:hover {
+            background-color: #218838;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+        .buttons input[type="button"] {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .buttons input[type="button"]:hover {
+            background-color: #0056b3;
+        }
+        .buttons input[type="button"].delete {
+            background-color: #dc3545;
+        }
+        .buttons input[type="button"].delete:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Админская панель</h2>
+    <div class="add-link">
+        <input type="text" id="newTitle" placeholder="Название ссылки" required>
+        <input type="text" id="newUrl" placeholder="URL ссылки" required>
+        <input type="button" id="addButton" value="Добавить">
+    </div>
+    <div class="links" id="linksContainer">
+        <ul id="linksList">
+            <!-- Ссылки будут добавляться сюда -->
+        </ul>
+    </div>
+    <div class="buttons">
+        <input type="button" id="deleteButton" class="delete" value="Удалить выбранные">
+        <input type="button" id="logoutButton" value="Выйти">
+    </div>
+</div>
+
+<script>
+    function fetchLinks() {
+        fetch('/api/tv/links')
+            .then(response => response.json())
+            .then(data => {
+                const linksList = document.getElementById('linksList');
+                linksList.innerHTML = ''; // Очищаем список перед обновлением
+
+                data.forEach(link => {
+                    const listItem = document.createElement('li');
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.value = link.id; // Предполагается, что у каждой ссылки есть уникальный ID
+
+                    const linkElement = document.createElement('a');
+                    linkElement.href = link.url;
+                    linkElement.textContent = link.title;
+                    linkElement.target = '_blank'; // Открывает ссылку в новой вкладке
+
+                    listItem.appendChild(checkbox);
+                    listItem.appendChild(linkElement);
+                    linksList.appendChild(listItem);
+                });
+            })
+            .catch(error => {
+                console.error('Ошибка при получении ссылок:', error);
+                const linksList = document.getElementById('linksList');
+                linksList.innerHTML = '<li>Ошибка при получении ссылок</li>';
+            });
+    }
+
+    function addLink() {
+        const newTitle = document.getElementById('newTitle').value;
+        const newUrl = document.getElementById('newUrl').value;
+
+        if (!newTitle || !newUrl) {
+            alert('Пожалуйста, заполните все поля.');
+            return;
+        }
+
+        fetch('/api/tv/links', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ title: newTitle, url: newUrl }),
+        })
+            .then(response => {
+                if (response.ok) {
+                    fetchLinks(); // Обновляем список ссылок
+                    document.getElementById('newTitle').value = '';
+                    document.getElementById('newUrl').value = '';
+                } else {
+                    alert('Ошибка при добавлении ссылки.');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка при добавлении ссылки:', error);
+                alert('Произошла ошибка при добавлении ссылки.');
+            });
+    }
+
+    function deleteSelectedLinks() {
+        const checkboxes = document.querySelectorAll('#linksList input[type="checkbox"]:checked');
+        const linkIds = Array.from(checkboxes).map(checkbox => checkbox.value);
+
+        if (linkIds.length === 0) {
+            alert('Пожалуйста, выберите ссылки для удаления.');
+            return;
+        }
+
+        fetch('/api/tv/links', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ids: linkIds }),
+        })
+            .then(response => {
+                if (response.ok) {
+                    fetchLinks(); // Обновляем список ссылок
+                } else {
+                    alert('Ошибка при удалении ссылок.');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка при удалении ссылок:', error);
+                alert('Произошла ошибка при удалении ссылок.');
+            });
+    }
+
+    function logout() {
+        const backlink = window.location.href;
+        fetch(`/api/user/logout?backlink=${encodeURIComponent(backlink)}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url; // Переходим на новую страницу
+                } else {
+                    alert('Ошибка при выходе из системы.');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка при выходе из системы:', error);
+                alert('Произошла ошибка при выходе из системы.');
+            });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchLinks(); // Получаем ссылки при загрузке страницы
+
+        document.getElementById('addButton').addEventListener('click', () => {
+            addLink(); // Добавляем новую ссылку
+        });
+
+        document.getElementById('deleteButton').addEventListener('click', () => {
+            deleteSelectedLinks(); // Удаляем выбранные ссылки
+        });
+
+        document.getElementById('logoutButton').addEventListener('click', () => {
+            logout(); // Выходим из системы
+        });
+    });
+</script>
+
+</body>
+</html>

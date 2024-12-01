@@ -13,11 +13,11 @@ class UserService(
 ) {
     /**
      * Создаёт код, для аутентификации с мобильного устройства
+     * Если передать uid, то сгенерируется код для текущего пользователя
      */
-    suspend fun createUserCode(): UserInfo {
-        val user = UID(UUID.randomUUID())
-        return UserInfo(user, generateCode(user, 3))
-
+    suspend fun createUserCode(user: UID? = null): UserInfo {
+        val currentUser = user ?: UID(UUID.randomUUID())
+        return UserInfo(currentUser, generateCode(currentUser, 3))
     }
 
     /**

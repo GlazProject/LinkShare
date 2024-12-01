@@ -5,6 +5,7 @@ import ru.linkshare.domain.models.UID
 import ru.linkshare.domain.repository.abstractions.CodesRepository
 import java.io.Closeable
 
+// TODO сделать нормальную БД
 class InMemoryCodesRepository : CodesRepository, Closeable {
     private val codes = mutableMapOf<String, CodeRecord>()
     private val scope = CoroutineScope(Dispatchers.Default)
