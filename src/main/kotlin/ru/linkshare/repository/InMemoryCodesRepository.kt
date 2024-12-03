@@ -6,11 +6,10 @@ import ru.linkshare.domain.repository.CodesRepository
 import java.io.Closeable
 
 // TODO сделать нормальную БД
-// TODO добавить время жизни записей
 private data class CodeRecord(val userId: UID, val expirationTime: Long)
 class InMemoryCodesRepository : CodesRepository, Closeable {
     private val codes = mutableMapOf<String, CodeRecord>()
-    private val scope = CoroutineScope(Dispatchers.Default)
+    private val scope = CoroutineScope(Dispatchers.IO)
 
     init {
         scope.launch{ cleaner() }

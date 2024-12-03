@@ -4,6 +4,7 @@ import io.ktor.server.routing.*
 
 fun Routing.configureUserRouting(userController: UserController) {
     route("api/user") {
+        get("id") { userController.getUserId(this.call) }
 
         route("code") {
             get { userController.getCodeForCurrentSession(this.call) }

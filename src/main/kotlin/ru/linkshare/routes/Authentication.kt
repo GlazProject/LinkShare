@@ -31,7 +31,7 @@ fun Application.useAuthentication() {
     install(Authentication) {
         session<UserSession>(AuthConstants.editorSessionName) {
             validate { it } // Достаточно проверить, что сессия существует
-            challenge("/user/login")
+            challenge("/user/login?backlink=/edit")
         }
 
         session<UserSession>(AuthConstants.tvSessionName) {

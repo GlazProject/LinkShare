@@ -3,81 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Получение кода доступа</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f9;
-            margin: 0;
-        }
-        .container {
-            text-align: center;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .code {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-        .buttons {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-        }
-        .buttons input[type="button"] {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .buttons input[type="button"]:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/common.js"></script>
+    <script src="/tv/code/codePage.js"></script>
+    <title>Вход</title>
 </head>
 <body>
-
-<div class="container">
-    <div class="code" id="codeDisplay">Загрузка...</div>
-    <div class="buttons">
-        <input type="button" id="applyButton" value="Применить">
-        <input type="button" id="refreshButton" value="Обновить">
-    </div>
+<div class="code-container container">
+        <h2>Ваш код для подключения</h2>
+        <div class="code" id="codeDisplay">Загрузка...</div>
+        <div class="buttons">
+            <button id="applyButton" class="button continue-button">Продолжить</button>
+            <button id="refreshButton" class="button refresh-button">Обновить</button>
+        </div>
 </div>
-
-<script>
-    function fetchCode() {
-        fetch('/api/user/code')
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('codeDisplay').textContent = data.code;
-            })
-            .catch(error => {
-                console.error('Ошибка при получении кода:', error);
-                document.getElementById('codeDisplay').textContent = 'Ошибка при получении кода';
-            });
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        fetchCode();
-
-        document.getElementById('applyButton').addEventListener('click', () => {
-            window.location.href = '/tv';
-        });
-
-        document.getElementById('refreshButton').addEventListener('click', () => {
-            fetchCode();
-        });
-    });
-</script>
-
 </body>
 </html>

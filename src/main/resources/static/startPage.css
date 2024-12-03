@@ -1,0 +1,54 @@
+.start-container {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+    font-size: 18px;
+    align-items: center;
+    height: 100%;
+}
+
+.start-container .selection {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.start-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 200px;
+    margin: 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    color: white;
+    transition: transform 0.2s ease;
+}
+
+.start-btn:hover {
+    transform: scale(1.05);
+}
+
+.view-btn {
+    background-color: #4caf50;
+}
+
+.view-btn img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+}
+
+.edit-btn {
+    background-color: #2196f3;
+}
+
+.edit-btn img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+}

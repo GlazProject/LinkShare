@@ -9,10 +9,9 @@ import ru.linkshare.domain.repository.LinksRepository
 class LinksService(
     private val repository: LinksRepository
 ) {
-    // TODO пробрасывать время жизни для ссылки
     suspend fun saveLink(session: UserSession?, request: LinkInfo){
         checkSession(session)
-        repository.addLink(session!!.userId, request)
+        repository.addLink(session!!.userId, request, 60*60*24)
     }
 
     suspend fun getLinks(session: UserSession?): List<LinkInfo>{

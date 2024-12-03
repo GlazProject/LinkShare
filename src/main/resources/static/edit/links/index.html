@@ -2,26 +2,37 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Админская панель</title>
-    <link rel="stylesheet" href="/edit/links/styles.css">
-    <script src="/edit/links/script.js"></script>
+    <title>Редактирование ссылок</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/common.js" defer></script>
+    <script src="/edit/links/linksPage.js" defer></script>
 </head>
 <body>
 <div class="container">
-    <h2>Панель администратора</h2>
-    <div class="add-link">
-        <input type="text" id="newTitle" placeholder="Название ссылки" required>
-        <input type="text" id="newUrl" placeholder="URL ссылки" required>
-        <input type="button" id="addButton" value="Добавить">
-    </div>
-    <div class="links" id="linksContainer">
-        <ul id="linksList"></ul>
-    </div>
-    <div class="buttons">
-        <input type="button" id="deleteButton" class="delete" value="Удалить выбранные">
-        <input type="button" id="logoutButton" value="Выйти">
-    </div>
+    <header class="header">
+        <div class="user-info">
+            <span id="userName">Загрузка...</span>
+        </div>
+        <div class="logout">
+            <button id="logoutButton" class="button logout-button">Выйти</button>
+        </div>
+    </header>
+    <main>
+        <section>
+            <h2>Доступные ссылки</h2>
+            <div class="add-link">
+                <input type="text" id="newTitle" placeholder="Название ссылки" required>
+                <input type="text" id="newUrl" placeholder="URL ссылки" required>
+                <button id="addButton" class="button add-button">Добавить</button>
+            </div>
+            <div class="links" id="linksContainer">
+                <ul id="linksList"></ul>
+            </div>
+            <div class="buttons">
+                <button id="deleteButton" class="button delete-button">Удалить выбранные</button>
+            </div>
+        </section>
+    </main>
 </div>
 </body>
 </html>

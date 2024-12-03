@@ -9,7 +9,7 @@ import ru.linkshare.domain.service.UserService
 import ru.linkshare.routes.api.models.CodeDTO
 
 class UserController(private val service: UserService) {
-    // TODO сделать возможность генерации QR кода. Тo есть перенести код в query параметры
+    // TODO сделать возможность генерации QR кода на клиенте. Для этого код в квери параметрах
     /**
      * Позволяет получить одноразовый код аутентификации для нового пользователя.
      * Проставляет значение сессии
@@ -42,15 +42,27 @@ class UserController(private val service: UserService) {
             ?: throw ApplicationException.forbidden()
 
         call.sessions.set(UserSession(userId))
-        call.respondRedirect(call.request.queryParameters[backlink] ?: "/")
+        backlinkRedirect(call)
     }
 
     suspend fun logOut(call: ApplicationCall){
         call.sessions.clear<UserSession>()
-        call.respondRedirect(call.request.queryParameters[backlink] ?: "/")
+        call.respondRedirect("/")
+    }
+
+    private suspend fun backlinkRedirect(call: ApplicationCall){
+        val backlink = call.request.queryParameters[queryBacklink]
+        call.respondRedirect( if (backlink.isNullOrEmpty()) "/" else backlink )
+    }
+
+    suspend fun getUserId(call: ApplicationCall) {
+        val uid = call.sessions.get<UserSession>()?.userId
+            ?: throw ApplicationException.authenticationFailed()
+
+        call.respondText(uid.uid.toString().substring(0, 5))
     }
 
     companion object{
-        private const val backlink: String = "backlink";
+        private const val queryBacklink: String = "backlink";
     }
 }
