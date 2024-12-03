@@ -4,7 +4,7 @@ import ru.linkshare.domain.exceptions.ApplicationException
 import ru.linkshare.domain.models.LinkInfo
 import ru.linkshare.domain.models.LinkTitle
 import ru.linkshare.domain.models.UserSession
-import ru.linkshare.domain.repository.abstractions.LinksRepository
+import ru.linkshare.domain.repository.LinksRepository
 
 class LinksService(
     private val repository: LinksRepository
@@ -36,6 +36,6 @@ class LinksService(
 
     private fun checkSession(session: UserSession?){
         if (session == null)
-            throw ApplicationException.unauthenticated()
+            throw ApplicationException.authenticationFailed()
     }
 }

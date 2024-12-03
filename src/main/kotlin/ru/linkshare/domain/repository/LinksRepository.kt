@@ -1,4 +1,4 @@
-package ru.linkshare.domain.repository.abstractions
+package ru.linkshare.domain.repository
 
 import ru.linkshare.domain.models.LinkInfo
 import ru.linkshare.domain.models.LinkTitle

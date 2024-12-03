@@ -1,11 +1,13 @@
-package ru.linkshare.domain.repository
+package ru.linkshare.repository
 
 import kotlinx.coroutines.*
 import ru.linkshare.domain.models.UID
-import ru.linkshare.domain.repository.abstractions.CodesRepository
+import ru.linkshare.domain.repository.CodesRepository
 import java.io.Closeable
 
 // TODO сделать нормальную БД
+// TODO добавить время жизни записей
+private data class CodeRecord(val userId: UID, val expirationTime: Long)
 class InMemoryCodesRepository : CodesRepository, Closeable {
     private val codes = mutableMapOf<String, CodeRecord>()
     private val scope = CoroutineScope(Dispatchers.Default)
@@ -40,6 +42,3 @@ class InMemoryCodesRepository : CodesRepository, Closeable {
         }
     }
 }
-
-private data class CodeRecord(val userId: UID, val expirationTime: Long)
-

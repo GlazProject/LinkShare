@@ -1,9 +1,9 @@
-package ru.linkshare.domain.repository
+package ru.linkshare.repository
 
 import ru.linkshare.domain.models.LinkInfo
 import ru.linkshare.domain.models.LinkTitle
 import ru.linkshare.domain.models.UID
-import ru.linkshare.domain.repository.abstractions.LinksRepository
+import ru.linkshare.domain.repository.LinksRepository
 
 // TODO сделать нормальную БД
 // TODO добавить время жизни записей

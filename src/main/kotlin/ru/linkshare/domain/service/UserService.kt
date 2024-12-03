@@ -2,7 +2,7 @@ package ru.linkshare.domain.service
 
 import ru.linkshare.domain.models.UID
 import ru.linkshare.domain.models.UserInfo
-import ru.linkshare.domain.repository.abstractions.CodesRepository
+import ru.linkshare.domain.repository.CodesRepository
 import ru.linkshare.domain.utils.CodesGenerator
 import java.lang.Exception
 import java.util.*
@@ -27,15 +27,15 @@ class UserService(
         return repository.getUserAndDeleteCode(code)
     }
 
-    private suspend fun generateCode(user: UID, attemptLeft: Int): String {
-        val code = generator.getSecretCode(4)
+    private suspend fun generateCode(user: UID, attemptsLeft: Int): String {
+        val code = generator.getSecretCode()
         try {
             repository.setCodeOrException(user, code, 120)
         }
         catch(_: Exception) {
-            if (attemptLeft == 0)
+            if (attemptsLeft == 0)
                 throw Exception("Failed to create authentication code")
-            generateCode(user, attemptLeft-1)
+            generateCode(user, attemptsLeft-1)
         }
 
         return code

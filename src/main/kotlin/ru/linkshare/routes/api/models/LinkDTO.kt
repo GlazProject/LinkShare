@@ -1,4 +1,4 @@
-package ru.linkshare.web.models
+package ru.linkshare.routes.api.models
 
 import kotlinx.serialization.Serializable
 

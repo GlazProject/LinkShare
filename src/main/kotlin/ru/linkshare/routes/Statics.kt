@@ -2,25 +2,34 @@ package ru.linkshare.routes
 
 import io.ktor.server.auth.*
 import io.ktor.server.http.content.*
+import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Routing.setupTvStatics() {
-    staticResources("user/login", "/static/user/login")
+fun Routing.configureStatics(){
+    useLinksStatics()
+    useTvStatics()
+    useUserStatics()
+}
 
+private fun Routing.useTvStatics() {
     staticResources("tv/code", "/static/tv/code")
-    authenticate("show-session") {
+    staticResources("/", "static/main")
+
+    authenticate(AuthConstants.tvSessionName) {
         staticResources("tv", "/static/tv")
     }
+}
 
-    authenticate("editor-session") {
+private fun Routing.useLinksStatics(){
+    get("edit") { this.call.respondRedirect("edit/links") }
+
+    authenticate(AuthConstants.editorSessionName) {
         staticResources("edit/links", "/static/edit/links")
     }
 }
 
-fun Routing.setupLinksStatics(){
+private fun Routing.useUserStatics(){
+    get("user") {this.call.respondRedirect("user/login")}
 
-}
-
-fun Routing.setupUserStatics(){
     staticResources("user/login", "/static/user/login")
 }

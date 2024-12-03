@@ -74,12 +74,11 @@
                 const linksList = document.getElementById('linksList');
                 linksList.innerHTML = '';
 
-                data.forEach((link, index) => {
+                data.forEach((link, _) => {
                     const listItem = document.createElement('li');
                     const linkElement = document.createElement('a');
                     linkElement.href = link.url;
                     linkElement.textContent = link.title;
-                    // linkElement.target = '_blank';
                     listItem.appendChild(linkElement);
                     linksList.appendChild(listItem);
                 });

@@ -7,6 +7,7 @@ class ApplicationException(
     val errorMessage: String? = null
 ): Exception() {
     companion object{
-        fun unauthenticated() = ApplicationException(HttpStatusCode.Unauthorized, "User is not authenticated")
+        fun authenticationFailed() = ApplicationException(HttpStatusCode.Unauthorized, "User is not authenticated")
+        fun forbidden() = ApplicationException(HttpStatusCode.Unauthorized, "User is not authenticated")
     }
 }
