@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Список ссылок</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/tv/tvPage.js" defer></script>
+  <script src="/common.js" defer></script>
+</head>
+<body>
+<div class="container">
+  <header class="header">
+    <div class="user-info">
+      <span id="userName">Загрузка...</span>
+    </div>
+    <div class="code">
+      <button id="getCodeButton" class="button code-button">Получить код</button>
+    </div>
+    <div class="logout">
+      <button id="logoutButton" class="button logout-button">Выйти</button>
+    </div>
+  </header>
+  <main>
+    <section class="links" id="linksContainer">
+      <h2>Доступные ссылки</h2>
+      <ol id="linksList">
+      </ol>
+    </section>
+    <div class="buttons">
+      <button id="refreshButton" class="button refresh-button">Обновить</button>
+    </div>
+  </main>
+</div>
+</body>
+</html>

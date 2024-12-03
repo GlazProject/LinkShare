@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование ссылок</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/common.js" defer></script>
+    <script src="/edit/links/linksPage.js" defer></script>
+</head>
+<body>
+<div class="container">
+    <header class="header">
+        <div class="user-info">
+            <span id="userName">Загрузка...</span>
+        </div>
+        <div class="logout">
+            <button id="logoutButton" class="button logout-button">Выйти</button>
+        </div>
+    </header>
+    <main>
+        <section>
+            <h2>Доступные ссылки</h2>
+            <div class="add-link">
+                <input type="text" id="newTitle" placeholder="Название ссылки" required>
+                <input type="text" id="newUrl" placeholder="URL ссылки" required>
+                <button id="addButton" class="button add-button">Добавить</button>
+            </div>
+            <div class="links" id="linksContainer">
+                <ul id="linksList"></ul>
+            </div>
+            <div class="buttons">
+                <button id="deleteButton" class="button delete-button">Удалить выбранные</button>
+            </div>
+        </section>
+    </main>
+</div>
+</body>
+</html>
