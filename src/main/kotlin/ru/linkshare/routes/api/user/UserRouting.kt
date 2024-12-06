@@ -11,7 +11,7 @@ fun Routing.configureUserRouting(userController: UserController) {
             get("new") { userController.getNewCode(this.call) }
         }
 
-        get("login") { userController.logIn(this.call) }
-        get("logout") { userController.logOut(this.call) }
+        get("login") { userController.login(this.call) }
+        get("logout") { userController.logout(this.call) }
     }
 }

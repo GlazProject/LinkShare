@@ -35,7 +35,7 @@ class UserController(private val service: UserService) {
     /**
      * В случае корректного кода находит пользователя и проставляет соответсвующую сессию
      */
-    suspend fun logIn(call: ApplicationCall){
+    suspend fun login(call: ApplicationCall){
         val code = call.request.queryParameters["code"]
             ?: throw ApplicationException.forbidden()
         val userId = service.findUserByCode(code)
@@ -45,7 +45,7 @@ class UserController(private val service: UserService) {
         backlinkRedirect(call)
     }
 
-    suspend fun logOut(call: ApplicationCall){
+    suspend fun logout(call: ApplicationCall){
         call.sessions.clear<UserSession>()
         call.respondRedirect("/")
     }
@@ -63,6 +63,6 @@ class UserController(private val service: UserService) {
     }
 
     companion object{
-        private const val queryBacklink: String = "backlink";
+        private const val queryBacklink: String = "backlink"
     }
 }

@@ -17,10 +17,13 @@ internal class AuthConstants {
 
 fun Application.useAuthentication() {
 
+    val secretEncryptKey = environment.config.propertyOrNull("ktor.secrets.cookie.encryptKey")?.getString()?.let { hex(it) }
+        ?: throw Exception("Failed to load cookie.encryptKey")
+
+    val secretSignKey = environment.config.propertyOrNull("ktor.secrets.cookie.signKey")?.getString()?.let { hex(it) }
+        ?: throw Exception("Failed to load cookie.signKey")
+
     install(Sessions){
-        // TODO Вынести в конфигурационный файл
-        val secretEncryptKey = hex("00112233445566778899aabbccddeeff")
-        val secretSignKey = hex("6819b57a326945c1968f45236589")
         cookie<UserSession>(AuthConstants.XAuthSid, directorySessionStorage(File("build/.sessions"))){
             cookie.path = "/"
             cookie.maxAgeInSeconds = 60*60*24*7

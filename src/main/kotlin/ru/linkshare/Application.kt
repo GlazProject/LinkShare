@@ -2,7 +2,6 @@ package ru.linkshare
 
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
-import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.routing.*
@@ -24,11 +23,9 @@ import ru.linkshare.routes.configureStatics
 import ru.linkshare.routes.useAuthentication
 import ru.linkshare.routes.useStatusPages
 
-fun main() {
-    embeddedServer(Netty, port = 8080, host = "0.0.0.0", module = Application::module)
-        .start(wait = true)
-}
+fun main(args: Array<String>) = EngineMain.main(args)
 
+// Используется в качестве точки входа в конфигурации
 fun Application.module() = module(DI {
     bindSingleton<CodesRepository> { InMemoryCodesRepository() }
     bindSingleton<LinksRepository> { InMemoryLinksRepository() }

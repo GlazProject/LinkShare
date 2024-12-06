@@ -9,7 +9,7 @@ function fetchUserName(userNameElement){
         });
 }
 
-function logOut(from){
+function logout(from){
     const query = from === undefined ? "" : `?backlink=${from}`;
     fetch(`/api/user/logout${query}`)
         .then(response => {

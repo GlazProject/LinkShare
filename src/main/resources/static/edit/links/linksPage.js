@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('addButton').addEventListener('click', saveLink);
     document.getElementById('deleteButton').addEventListener('click', deleteSelectedLinks);
-    document.getElementById('logoutButton').addEventListener('click', () => logOut("edit"));
+    document.getElementById('logoutButton').addEventListener('click', () => logout("edit"));
 
     fetchLinks();
     fetchUserName(document.getElementById('userName'))

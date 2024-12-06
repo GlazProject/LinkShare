@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('refreshButton').addEventListener('click', fetchLinks);
-    document.getElementById('logoutButton').addEventListener('click', () => logOut());
+    document.getElementById('logoutButton').addEventListener('click', () => logout());
     document.getElementById('getCodeButton').addEventListener('click', fetchCode);
 
     fetchLinks();

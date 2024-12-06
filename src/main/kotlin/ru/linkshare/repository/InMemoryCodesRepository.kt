@@ -36,7 +36,7 @@ class InMemoryCodesRepository : CodesRepository, Closeable {
     private suspend fun cleaner() {
         while (true) {
             val now = System.currentTimeMillis()
-            codes.filter { it.value.expirationTime < now }.forEach { codes.remove(it.key) }
+            codes.entries.removeIf { it.value.expirationTime < now }
             delay(1000)
         }
     }
