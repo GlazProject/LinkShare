@@ -35,6 +35,7 @@ dependencies {
     implementation("io.ktor:ktor-server-auth")
     implementation("org.kodein.di:kodein-di-jvm:7.17.0")
     implementation("ch.qos.logback:logback-classic:$logback_version")
+    implementation("com.google.guava:guava:33.3.1-jre")
     testImplementation("io.ktor:ktor-server-test-host-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }

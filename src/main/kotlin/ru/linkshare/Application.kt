@@ -15,6 +15,8 @@ import ru.linkshare.domain.repository.LinksRepository
 import ru.linkshare.domain.service.LinksService
 import ru.linkshare.domain.service.UserService
 import ru.linkshare.domain.utils.CodesGenerator
+import ru.linkshare.repository.CacheCodesRepository
+import ru.linkshare.repository.CacheLinksRepository
 import ru.linkshare.routes.api.links.LinksController
 import ru.linkshare.routes.api.links.configureLinksRouting
 import ru.linkshare.routes.api.user.UserController
@@ -27,8 +29,8 @@ fun main(args: Array<String>) = EngineMain.main(args)
 
 // Используется в качестве точки входа в конфигурации
 fun Application.module() = module(DI {
-    bindSingleton<CodesRepository> { InMemoryCodesRepository() }
-    bindSingleton<LinksRepository> { InMemoryLinksRepository() }
+    bindSingleton<CodesRepository> { CacheCodesRepository() }
+    bindSingleton<LinksRepository> { CacheLinksRepository() }
     bindSingleton { CodesGenerator() }
     bindSingleton { UserService(instance(), instance()) }
     bindSingleton { LinksService(instance()) }

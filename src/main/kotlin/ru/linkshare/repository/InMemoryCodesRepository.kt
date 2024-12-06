@@ -10,6 +10,7 @@ private data class CodeRecord(val userId: UID, val expirationTime: Long)
 class InMemoryCodesRepository : CodesRepository, Closeable {
     private val codes = mutableMapOf<String, CodeRecord>()
     private val scope = CoroutineScope(Dispatchers.IO)
+    private val ttl: Int = 120 * 1000
 
     init {
         scope.launch{ cleaner() }
@@ -19,8 +20,8 @@ class InMemoryCodesRepository : CodesRepository, Closeable {
         scope.cancel()
     }
 
-    override suspend fun setCodeOrException(userId: UID, code: String, ttlSecs: Int) {
-        codes[code] = CodeRecord(userId, System.currentTimeMillis() + ttlSecs * 1000)
+    override suspend fun setCodeOrException(userId: UID, code: String) {
+        codes[code] = CodeRecord(userId, System.currentTimeMillis() + ttl)
     }
 
     override suspend fun getUserAndDeleteCode(code: String): UID? {

@@ -13,6 +13,7 @@ private data class LinkRecord(val data: LinkInfo, val expirationTime: Long)
 class InMemoryLinksRepository : LinksRepository, Closeable {
     private val links = mutableMapOf<UID, MutableList<LinkRecord>>()
     private val scope = CoroutineScope(Dispatchers.IO)
+    private val ttl: Int = 24*60*60*1000
 
     init {
         scope.launch{ cleaner() }
@@ -26,8 +27,8 @@ class InMemoryLinksRepository : LinksRepository, Closeable {
         return links[userId]?.map{it.data} ?: emptyList()
     }
 
-    override suspend fun addLink(userId: UID, info: LinkInfo, ttlSecs: Int) {
-        val record = LinkRecord(info, System.currentTimeMillis() + ttlSecs * 1000)
+    override suspend fun addLink(userId: UID, info: LinkInfo) {
+        val record = LinkRecord(info, System.currentTimeMillis() + ttl)
         links.computeIfAbsent(userId) { mutableListOf() }.add(record)
     }
 

@@ -6,6 +6,6 @@ import ru.linkshare.domain.models.UID
 
 interface LinksRepository {
     suspend fun getLinks(userId: UID): List<LinkInfo>
-    suspend fun addLink(userId: UID, info: LinkInfo, ttlSecs: Int)
+    suspend fun addLink(userId: UID, info: LinkInfo)
     suspend fun deleteLink(userId: UID, title: LinkTitle)
 }

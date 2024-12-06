@@ -30,7 +30,7 @@ class UserService(
     private suspend fun generateCode(user: UID, attemptsLeft: Int): String {
         val code = generator.getSecretCode()
         try {
-            repository.setCodeOrException(user, code, 120)
+            repository.setCodeOrException(user, code)
         }
         catch(_: Exception) {
             if (attemptsLeft == 0)

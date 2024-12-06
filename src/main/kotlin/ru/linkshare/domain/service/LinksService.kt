@@ -11,7 +11,7 @@ class LinksService(
 ) {
     suspend fun saveLink(session: UserSession?, request: LinkInfo){
         checkSession(session)
-        repository.addLink(session!!.userId, request, 60*60*24)
+        repository.addLink(session!!.userId, request)
     }
 
     suspend fun getLinks(session: UserSession?): List<LinkInfo>{
